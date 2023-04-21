@@ -164,6 +164,11 @@ header{
     padding: 10px 40px;
     border-radius: 20px;
     cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn:hover{
+    scale:1.08;
 }
 
 .btn_rules{
@@ -218,4 +223,79 @@ margin-top: 10px;
     top: 0;
     left: 0;
     background-color: black;
+}
+
+/* Start pannel */
+.risk-group{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 10px auto 20px;
+}
+
+.risk-group button{
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 10px;
+    transition: ease 0.3s;
+}
+
+.risk-group button:not(.selected):hover{
+    scale: 1.15;
+}
+
+.risk-group .selected{
+    background-color:#131218;
+    color: white;
+}
+
+.player-selector{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin: 10px auto;
+}
+
+.select_player{
+    background-color: #ccc;
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
+    line-height: 2.5rem;
+    border-radius: 50%;
+    color:#131218;
+    transition: .3s ease;
+    cursor: pointer;
+}
+
+.select_player:not(.active):hover{
+    scale: 1.2;
+}
+
+.select_player.active:nth-child(1){
+    background-color: rebeccapurple;
+    color: white;
+}
+.select_player.active:nth-child(2){
+    background-color: #e32b69;
+    color: white;
+}
+.select_player.active:nth-child(3){
+    background-color: #287194;
+    color: white;
+}
+.select_player.active:nth-child(4){
+    background-color: #1a9990;
+    color: white;
+}
+.select_player.active:nth-child(5){
+    background-color: #b61b43;
+    color: white;
+}
+
+
+.start_pannel>.btn{
+    display: block;
+    margin: 50px auto;
 }
