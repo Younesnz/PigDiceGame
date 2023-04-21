@@ -29,6 +29,8 @@ main{
     display: flex;
     flex-direction: column;
     align-items: center;
+    opacity: 0;
+    transition: opacity .8s ease;
     /* Remove */
     display: none;
 }
@@ -226,6 +228,9 @@ margin-top: 10px;
 }
 
 /* Start pannel */
+.start_pannel{
+    transition: opacity .5s ease;
+}
 .risk-group{
     display: flex;
     width: 100%;
@@ -269,7 +274,7 @@ margin-top: 10px;
     cursor: pointer;
 }
 
-.select_player:not(.active):hover{
+.select_player:hover{
     scale: 1.2;
 }
 
