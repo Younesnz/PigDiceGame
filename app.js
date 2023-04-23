@@ -9,6 +9,7 @@ const dice = document.querySelector(".dice");
 const btn_roll = document.querySelector(".btn_roll");
 const roll_result = document.querySelector(".roll_result");
 const body = document.querySelector("body");
+const playersProgress = document.querySelector(".players");
 
 //colors
 const color_red = "#f63330";
@@ -53,6 +54,7 @@ function StartGame(e) {
   pnl_start.style.opacity = "0";
   pnl_start.style.pointerEvents = "none";
   setTimeout(() => {
+    InitPlayers();
     pnl_start.style.display = "none";
     pnl_game.style.display = "flex";
     setTimeout(() => {
@@ -120,10 +122,45 @@ function rotateDice(toNum) {
 }
 
 //Players Model
-function Player(name, color) {
-  this.name = name;
+function Player(number, color) {
+  this.number = number;
   this.color = color;
   this.heldScore = 0;
   this.currentScore = 0;
   this.isActive = false;
+  this.view = this.initView();
+}
+
+Player.prototype.initView = function () {
+  let player = document.createElement("div");
+  let playerInfo = document.createElement("div");
+  player.className = "player";
+  playerInfo.className = "player_info";
+  playerInfo.innerHTML = `<h5>Player${this.number}</h5><p>${this.currentScore}</p>`;
+  player.appendChild(playerInfo);
+
+  let progressContainer = document.createElement("div");
+  progressContainer.className = "progress progress_container";
+  progressContainer.innerHTML =
+    '<div class="progress progress_current"></div><div class="progress progress_held"></div>';
+  player.appendChild(progressContainer);
+
+  return player;
+};
+
+Player.prototype.renderView = function () {
+  playersProgress.appendChild(this.view);
+  this.view.querySelector("h5").style.color = this.color;
+  this.view.querySelector(".progress_current").style.backgroundColor =
+    this.color;
+};
+
+const players = [];
+const colors = ["#663399", "#e32b69", "#287194", "#1a9990", "#b61b43"];
+//Game Functionality
+function InitPlayers() {
+  for (let i = 1; i <= numOfPlayers; i++) {
+    let p = new Player(i, colors[i - 1]);
+    p.renderView();
+  }
 }

@@ -280,7 +280,7 @@ margin-top: 10px;
 }
 
 .select_player.active:nth-child(1){
-    background-color: rebeccapurple;
+    background-color: #663399;
     color: white;
 }
 .select_player.active:nth-child(2){
