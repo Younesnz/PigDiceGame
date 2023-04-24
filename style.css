@@ -210,22 +210,24 @@ margin-top: 10px;
 
 .progress_current{
     position: absolute;
-    width: 70%;
+    width: 0%;
     height: 100%;
     border-radius: 30px;
     top: 0;
     left: 0;
     background-color: red;
+    transition: width 0.2s ease;
 }
 
 .progress_held{
     position: absolute;
-    width: 50%;
+    width: 0%;
     height: 100%;
     border-radius: 30px;
     top: 0;
     left: 0;
     background-color: black;
+    transition: width 0.2s ease;
 }
 
 /* Start pannel */

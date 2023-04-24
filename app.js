@@ -7,6 +7,7 @@ const pnl_game = document.querySelector(".game_pannel");
 // DOM elements
 const dice = document.querySelector(".dice");
 const btn_roll = document.querySelector(".btn_roll");
+const btn_hold = document.querySelector(".btn_hold");
 const roll_result = document.querySelector(".roll_result");
 const body = document.querySelector("body");
 const playersProgress = document.querySelector(".players");
@@ -21,12 +22,16 @@ let numOfPlayers = 1;
 
 //Game Variables
 let rollSum = 0;
+const players = [];
+const colors = ["#663399", "#e32b69", "#287194", "#1a9990", "#b61b43"];
+let currentPlayer = 0;
 
 //Listeners
 for (btn of btns_risk) btn.addEventListener("click", SelectRisk);
 for (btn of btns_player) btn.addEventListener("click", SelectNumberOfPlayers);
 btn_startGame.addEventListener("click", StartGame);
 btn_roll.addEventListener("click", Roll);
+btn_hold.addEventListener("click", Hold);
 
 //Settings functionality
 function SelectRisk(e) {
@@ -77,15 +82,43 @@ function Roll(e) {
   } else {
     rollSum += diceNum;
   }
-  setTimeout(SetRollResult, 2000);
+  setTimeout(PlayGame, 2000);
 }
 
-function SetRollResult() {
+function Hold(e) {
+  e.preventDefault();
+  const activePlayer = players[currentPlayer];
+  activePlayer.currentScore += rollSum;
+  activePlayer.view.querySelector(
+    ".progress_held"
+  ).style.width = `${activePlayer.currentScore}%`;
+  rollSum = 0;
   roll_result.innerText = rollSum;
+  currentPlayer = currentPlayer + 1 < numOfPlayers ? currentPlayer + 1 : 0;
+}
+
+function PlayGame() {
+  roll_result.innerText = rollSum;
+  const activePlayer = players[currentPlayer];
+
+  if (activePlayer.currentScore + rollSum >= 100) {
+    activePlayer.view.querySelector(".progress_current").style.width = "100%";
+    setTimeout(() => {
+      activePlayer.view.querySelector(".progress_held").style.width = "100%";
+    }, 1000);
+  }
+
+  activePlayer.view.querySelector(".progress_current").style.width = `${
+    activePlayer.currentScore + rollSum
+  }%`;
+  activePlayer.view.querySelector("p").innerHTML =
+    activePlayer.currentScore + rollSum;
+
   if (rollSum === 0) {
     body.style.background = color_red;
     setTimeout(() => {
       body.style.background = color_background_light;
+      currentPlayer = currentPlayer + 1 < numOfPlayers ? currentPlayer + 1 : 0;
     }, 300);
   }
 }
@@ -155,12 +188,11 @@ Player.prototype.renderView = function () {
     this.color;
 };
 
-const players = [];
-const colors = ["#663399", "#e32b69", "#287194", "#1a9990", "#b61b43"];
 //Game Functionality
 function InitPlayers() {
   for (let i = 1; i <= numOfPlayers; i++) {
     let p = new Player(i, colors[i - 1]);
     p.renderView();
+    players.push(p);
   }
 }
