@@ -59,9 +59,9 @@ function StartGame(e) {
   pnl_start.style.opacity = "0";
   pnl_start.style.pointerEvents = "none";
   setTimeout(() => {
-    InitPlayers();
     pnl_start.style.display = "none";
     pnl_game.style.display = "flex";
+    InitPlayers();
     setTimeout(() => {
       pnl_game.style.opacity = "1";
     }, 100);
@@ -71,6 +71,7 @@ function StartGame(e) {
 //Dice Roll functionality
 function Roll(e) {
   e.preventDefault();
+  disableBtns();
   let diceNum = Math.floor(Math.random() * 6) + 1;
   rotateDice(0);
   setTimeout(() => {
@@ -94,15 +95,20 @@ function Hold(e) {
   ).style.width = `${activePlayer.currentScore}%`;
   rollSum = 0;
   roll_result.innerText = rollSum;
-  currentPlayer = currentPlayer + 1 < numOfPlayers ? currentPlayer + 1 : 0;
+  nextPlayer();
 }
 
 function PlayGame() {
+  enableBtns();
   roll_result.innerText = rollSum;
   const activePlayer = players[currentPlayer];
 
   if (activePlayer.currentScore + rollSum >= 100) {
+    disableBtns();
+    rollSum = 100 - activePlayer.currentScore;
     activePlayer.view.querySelector(".progress_current").style.width = "100%";
+    activePlayer.view.querySelector("i").className = "fa-solid fa-crown fa-lg";
+    activePlayer.view.querySelector("i").style.color = "#ffce1f";
     setTimeout(() => {
       activePlayer.view.querySelector(".progress_held").style.width = "100%";
     }, 1000);
@@ -118,9 +124,25 @@ function PlayGame() {
     body.style.background = color_red;
     setTimeout(() => {
       body.style.background = color_background_light;
-      currentPlayer = currentPlayer + 1 < numOfPlayers ? currentPlayer + 1 : 0;
+      nextPlayer();
     }, 300);
   }
+}
+
+function nextPlayer() {
+  players[currentPlayer].view.querySelector("i").style.opacity = "0";
+  currentPlayer = currentPlayer + 1 < numOfPlayers ? currentPlayer + 1 : 0;
+  players[currentPlayer].view.querySelector("i").style.opacity = "1";
+}
+
+function disableBtns() {
+  btn_hold.disabled = true;
+  btn_roll.disabled = true;
+}
+
+function enableBtns() {
+  btn_hold.disabled = false;
+  btn_roll.disabled = false;
 }
 
 function rotateDice(toNum) {
@@ -169,7 +191,7 @@ Player.prototype.initView = function () {
   let playerInfo = document.createElement("div");
   player.className = "player";
   playerInfo.className = "player_info";
-  playerInfo.innerHTML = `<h5>Player${this.number}</h5><p>${this.currentScore}</p>`;
+  playerInfo.innerHTML = `<h5><i class="fa-solid fa-caret-right fa-lg" style="opacity:0"></i> Player${this.number}</h5><p>${this.currentScore}</p>`;
   player.appendChild(playerInfo);
 
   let progressContainer = document.createElement("div");
@@ -194,5 +216,7 @@ function InitPlayers() {
     let p = new Player(i, colors[i - 1]);
     p.renderView();
     players.push(p);
+    console.log(p.view.querySelector("h5").style);
   }
+  players[0].view.querySelector("i").style.opacity = "1";
 }

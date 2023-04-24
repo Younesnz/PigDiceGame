@@ -169,8 +169,13 @@ header{
     transition: 0.3s ease;
 }
 
-.btn:not(.btn_roll):hover{
+.btn:not(:disabled):hover{
     scale:1.08;
+}
+
+.btn:disabled {
+    background-color: rgba(0,0,0,0.8);
+    cursor: not-allowed;
 }
 
 .btn_rules{
@@ -196,6 +201,14 @@ margin-top: 10px;
 .player_info{
     display: flex;
     justify-content: space-between;
+}
+
+.player_info h5{
+    margin-left: -10px;
+}
+
+.player_info h5 i{
+    transition: opacity .4s ease;
 }
 
 
@@ -227,7 +240,7 @@ margin-top: 10px;
     top: 0;
     left: 0;
     background-color: black;
-    transition: width 0.2s ease;
+    transition: width 0.5s ease;
 }
 
 /* Start pannel */
